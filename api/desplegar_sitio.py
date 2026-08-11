@@ -1,4 +1,3 @@
-
 import os
 import json
 from http.server import BaseHTTPRequestHandler
@@ -13,15 +12,15 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-def generar_codigo_sitio(nombre_proyecto, descripcion):
-    """Usa Gemini para generar el contenido HTML/CSS del micro-sitio basado en la idea."""
+def generar_codigo_sitio_pro(nombre_proyecto, descripcion):
+    """Utiliza Gemini para generar una landing page estática profesional basada en la idea del agente."""
     prompt = (
-        f"Eres un desarrollador experto en frontend. Crea una página web estática ultra ligera en un solo archivo HTML (con CSS incluido) "
-        f"para el siguiente micro-servicio digital:\n"
+        f"Eres un desarrollador experto en frontend y conversión SaaS. Crea una página web estática ultra ligera en un solo archivo HTML "
+        f"(con CSS moderno y responsivo integrado) para el siguiente micro-servicio digital:\n"
         f"Nombre del Proyecto: {nombre_proyecto}\n"
         f"Descripción: {descripcion}\n"
-        f"El diseño debe ser moderno, limpio, responsivo, enfocado en conversión y con un botón de pago simulado. "
-        f"Devuelve estrictamente el código HTML limpio, sin bloques de texto markdown adicionales ni explicaciones."
+        f"El diseño debe ser estilo futurista/neón (fondo oscuro, tarjetas estilizadas, botones de llamada a la acción claros y sección de precios). "
+        f"Devuelve estrictamente el código HTML limpio, sin bloques de texto markdown adicionales ni explicaciones previas."
     )
 
     response = client.models.generate_content(
@@ -34,14 +33,13 @@ def generar_codigo_sitio(nombre_proyecto, descripcion):
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
-            # Leer los datos enviados en la petición (ej. el proyecto a desplegar)
             content_length = int(self.headers.get('Content-Length', 0))
             body = self.rfile.read(content_length)
             data = json.loads(body.decode('utf-8'))
             
             nombre_proyecto = data.get("nombre_proyecto")
             subdominio = data.get("subdominio")
-            descripcion = data.get("descripcion_oferta", "Herramienta digital automatizada.")
+            descripcion = data.get("descripcion_oferta", "Micro-servicio automatizado por IA.")
 
             if not nombre_proyecto or not subdominio:
                 self.send_response(400)
@@ -50,24 +48,24 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "Faltan datos requeridos (nombre_proyecto o subdominio)"}).encode('utf-8'))
                 return
 
-            # 1. Generar el código de la landing page con Gemini
-            html_generado = generar_codigo_sitio(nombre_proyecto, descripcion)
+            # 1. Generar la landing page con IA
+            html_generado = generar_codigo_sitio_pro(nombre_proyecto, descripcion)
 
-            # 2. Registrar o actualizar el estado del despliegue en Supabase
+            # 2. Actualizar el estado del proyecto en Supabase a 'activo'
             supabase.table("proyectos").update({
                 "estado": "activo"
             }).eq("subdominio", subdominio).execute()
 
-            # Responder con éxito y el HTML generado
+            # Responder con éxito
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             
             respuesta = {
                 "status": "success",
-                "mensaje": f"Micro-sitio para '{nombre_proyecto}' generado con éxito.",
-                "subdominio": f"{subdominio}.tu-dominio.com",
-                "html_preview": html_generado[:200] + "..." # Muestra un extracto del código
+                "mensaje": f"Micro-sitio para '{nombre_proyecto}' desplegado y generado con éxito.",
+                "subdominio": f"{subdominio}.vercel.app",
+                "preview_html": html_generado[:150] + "..."
             }
             self.wfile.write(json.dumps(respuesta).encode('utf-8'))
             
