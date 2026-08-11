@@ -1,0 +1,28 @@
+# Entornos virtuales de Python
+venv/
+env/
+ENV/
+.venv/
+
+# Variables de entorno y secretos
+.env
+.env.local
+.env.production
+
+# Archivos de caché y compilación de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Archivos del sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Directorios temporales de Vercel y compilación
+.vercel/
+dist/
+build/
