@@ -22,5 +22,15 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/aura",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/evaluar_ciclos",
+      "schedule": "0 1 * * *"
+    }
   ]
 }
