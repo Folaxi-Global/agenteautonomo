@@ -13,7 +13,7 @@ def generar_respuesta_estructurada(prompt: str) -> str:
     """Envía un prompt a Gemini utilizando el modelo flash optimizado."""
     client = get_gemini_client()
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
