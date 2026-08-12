@@ -5,30 +5,39 @@ from google import genai
 from google.genai import types
 from supabase import create_client, Client
 
+# --- CONFIGURACIÓN DE ENTORNO ---
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 client = genai.Client(api_key=GEMINI_API_KEY)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def generar_codigo_sitio_pro(nombre_proyecto, descripcion):
-    """Utiliza Gemini para generar una landing page estática profesional basada en la idea del agente."""
+    """Utiliza Gemini 2.0 para generar una landing page estática profesional y autónoma."""
     prompt = (
         f"Eres un desarrollador experto en frontend y conversión SaaS. Crea una página web estática ultra ligera en un solo archivo HTML "
-        f"(con CSS moderno y responsivo integrado) para el siguiente micro-servicio digital:\n"
+        f"(con CSS moderno, responsivo y diseño ciber-neón integrado) para el siguiente micro-servicio digital:\n"
         f"Nombre del Proyecto: {nombre_proyecto}\n"
         f"Descripción: {descripcion}\n"
-        f"El diseño debe ser estilo futurista/neón (fondo oscuro, tarjetas estilizadas, botones de llamada a la acción claros y sección de precios). "
-        f"Devuelve estrictamente el código HTML limpio, sin bloques de texto markdown adicionales ni explicaciones previas."
+        f"Devuelve estrictamente el código HTML limpio. No incluyas explicaciones previas."
     )
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-2.0-flash",
         contents=prompt,
     )
     
-    return response.text
+    html_limpio = response.text.strip()
+    # Limpiar bloques de markdown si la IA los incluye por error
+    if html_limpio.startswith("```html"):
+        html_limpio = html_limpio[7:]
+    if html_limpio.startswith("```"):
+        html_limpio = html_limpio[3:]
+    if html_limpio.endswith("```"):
+        html_limpio = html_limpio[:-3]
+        
+    return html_limpio.strip()
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -43,7 +52,7 @@ class handler(BaseHTTPRequestHandler):
 
             if not nombre_proyecto or not subdominio:
                 self.send_response(400)
-                self.send_header('Content-type', 'application/json')
+                self.send_header('Content-type', 'application/json; charset=utf-8')
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": "Faltan datos requeridos (nombre_proyecto o subdominio)"}).encode('utf-8'))
                 return
@@ -53,24 +62,32 @@ class handler(BaseHTTPRequestHandler):
 
             # 2. Actualizar el estado del proyecto en Supabase a 'activo'
             supabase.table("proyectos").update({
-                "estado": "activo"
+                "estado": "activo",
+                "descripcion_oferta": descripcion
             }).eq("subdominio", subdominio).execute()
 
-            # Responder con éxito
+            # 3. Respuesta exitosa
             self.send_response(200)
-            self.send_header('Content-type', 'application/json')
+            self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
             
             respuesta = {
                 "status": "success",
-                "mensaje": f"Micro-sitio para '{nombre_proyecto}' desplegado y generado con éxito.",
+                "mensaje": f"Micro-sitio para '{nombre_proyecto}' desplegado de forma autónoma.",
                 "subdominio": f"{subdominio}.vercel.app",
                 "preview_html": html_generado[:150] + "..."
             }
-            self.wfile.write(json.dumps(respuesta).encode('utf-8'))
+            self.wfile.write(json.dumps(respuesta, ensure_ascii=False).encode('utf-8'))
             
         except Exception as e:
             self.send_response(500)
-            self.send_header('Content-type', 'application/json')
+            self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
             self.wfile.write(json.dumps({"status": "error", "detalles": str(e)}).encode('utf-8'))
+
+    def do_GET(self):
+        """Permite verificar el estado del endpoint o disparar una prueba rápida por GET."""
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(json.dumps({"status": "activo", "modulo": "desplegar_sitio.py Pro"}).encode('utf-8'))
