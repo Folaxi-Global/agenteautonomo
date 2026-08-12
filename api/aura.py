@@ -30,9 +30,9 @@ def aura_idear_y_registrar():
         "Responde estrictamente en JSON con: 'nombre_proyecto', 'subdominio_sugerido', 'descripcion_oferta'."
     )
 
-    # Llamada al modelo actual y estable
+    # Llamada al modelo configurado en versión 3.6-flash
     response = client.models.generate_content(
-        model="gemini-2.0-flash", 
+        model="gemini-3.6-flash", 
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
