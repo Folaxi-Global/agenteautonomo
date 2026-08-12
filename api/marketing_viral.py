@@ -31,7 +31,8 @@ class handler(BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.send_header('Content-type', 'application/json; charset=utf-8')
                 self.end_headers()
-                self.wfile.write(json.dumps({"error": "No se encontró ningún proyecto activo para generar marketing."}).encode('utf-8'))
+                error_res = {"status": "error", "mensaje": "No se encontró ningún proyecto activo para generar marketing."}
+                self.wfile.write(json.dumps(error_res, ensure_ascii=False).encode('utf-8'))
                 return
 
             proyecto = response.data[0]
@@ -39,7 +40,7 @@ class handler(BaseHTTPRequestHandler):
             subdominio = proyecto.get("subdominio")
             descripcion = proyecto.get("descripcion_oferta", "Herramienta digital inteligente optimizada para la conversión.")
 
-            # 2. Prompt Pro de Growth Hacking y Psicología de Consumo
+            # 2. Prompt Pro de Growth Hacking y Psicología de Consumo con Gemini
             prompt = (
                 f"Eres el Director de Marketing y Crecimiento de un holding global de micro-SaaS. "
                 f"Diseña una estrategia de marketing viral de alto rendimiento para el siguiente producto:\n"
@@ -52,14 +53,15 @@ class handler(BaseHTTPRequestHandler):
                 f"  \"gancho_video_3s\": \"Frase visual y auditiva para los primeros 3 segundos del video que rompa el patrón de scroll.\",\n"
                 f"  \"guion_cuerpo\": \"Explicación rápida del problema y cómo este micro-SaaS lo soluciona en menos de 20 segundos.\",\n"
                 f"  \"call_to_action\": \"Llamada a la acción persuasiva para ir al link del perfil o bio.\",\n"
+                f"  \"copy_publicacion\": \"El texto completo optimizado para la descripción del post con llamadas a la acción claras.\",\n"
                 f"  \"hashtags_virales\": [\"#hashtag1\", \"#hashtag2\", \"#hashtag3\"],\n"
-                f"  \"estrategia_growth_hacking\": \"Una acción de guerrilla digital exacta para ejecutar hoy mismo y conseguir los primeros clientes.\"\n"
+                f"  \"estrategia_growth_hacking\": \"Una acción de guerrilla digital exacta para conseguir los primeros clientes hoy mismo.\"\n"
                 f"}"
             )
 
-            # 3. Llamada al motor inteligente (Gemini 3.6 Flash)
+            # 3. Llamada al motor inteligente usando Gemini Flash
             ai_response = client.models.generate_content(
-                model="gemini-3.6-flash",
+                model="gemini-2.5-flash",
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
@@ -87,4 +89,5 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
-            self.wfile.write(json.dumps({"status": "error", "detalles": str(e)}).encode('utf-8'))
+            error_res = {"status": "error", "detalles": str(e)}
+            self.wfile.write(json.dumps(error_res, ensure_ascii=False).encode('utf-8'))
