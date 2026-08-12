@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.U.R.A. | Micro-SaaS Automatizado</title>
+    <title>A.U.R.A. | Ecosistema de Micro-SaaS Automatizado</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -60,7 +60,7 @@
                 <li><span>✔</span> Actualizaciones autónomas en tiempo real</li>
                 <li><span>✔</span> Garantía de disponibilidad en la nube</li>
             </ul>
-            <button class="btn-main full-width" onclick="simularPagoPro()">Activar Suscripción</button>
+            <button class="btn-main full-width" onclick="procesarPagoAutonomo()">Activar Suscripción</button>
         </div>
     </section>
 
@@ -71,6 +71,28 @@
         </div>
     </footer>
 
+    <!-- Script de integración con la pasarela centralizada -->
+    <script>
+        async function procesarPagoAutonomo() {
+            try {
+                // Extraer el subdominio actual o usar un valor por defecto del ecosistema
+                const pathSegments = window.location.pathname.split('/');
+                const subdominio = pathSegments[pathSegments.length - 2] || 'ecosistema-general';
+                
+                const response = await fetch(`/api/pagar?subdominio=${subdominio}`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.url_checkout) {
+                    window.location.href = data.url_checkout;
+                } else {
+                    alert(data.mensaje || "Conectando con la pasarela de pagos centralizada...");
+                }
+            } catch (error) {
+                console.error("Error al procesar el pago:", error);
+                alert("Redirigiendo al sistema de cobro unificado...");
+            }
+        }
+    </script>
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
