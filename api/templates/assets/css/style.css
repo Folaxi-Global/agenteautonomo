@@ -1,104 +1,276 @@
-/* Mejoras de diseño Pro */
+/* ==========================================================================
+   A.U.R.A. System - Core Theme & Stylesheet (Cyber-Neon Dark Pro)
+   ========================================================================== */
+
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: #161b22;
+    --border-color: #30363d;
+    --border-highlight: #58a6ff;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --text-muted: #c9d1d9;
+    --accent-blue: #58a6ff;
+    --accent-blue-glow: rgba(88, 166, 255, 0.15);
+    --accent-green: #238636;
+    --accent-green-bright: #2ea043;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* --- Fondo Ambiental Reactivo --- */
 .glow-background {
     position: fixed;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 50% 30%, rgba(88, 166, 255, 0.05) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 30%, var(--accent-blue-glow) 0%, transparent 60%);
     z-index: -1;
     pointer-events: none;
 }
 
-.tag-pill {
-    background: rgba(88, 166, 255, 0.1);
-    color: #58a6ff;
-    padding: 0.35rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid rgba(88, 166, 255, 0.2);
-    display: inline-block;
-    margin-bottom: 1rem;
+/* --- Navegación Superior --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
 }
 
 .pulse-dot {
     display: inline-block;
     width: 8px;
     height: 8px;
-    background-color: #238636;
+    background-color: var(--accent-green-bright);
     border-radius: 50%;
-    box-shadow: 0 0 8px #238636;
-    margin-right: 4px;
+    box-shadow: 0 0 10px var(--accent-green-bright);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
 }
 
 .badge {
     font-size: 0.7rem;
-    background: #238636;
-    color: white;
+    background: var(--accent-green);
+    color: #ffffff;
     padding: 2px 6px;
     border-radius: 4px;
-    vertical-align: middle;
+    font-weight: 600;
+}
+
+.tag-pill {
+    background: rgba(88, 166, 255, 0.1);
+    color: var(--accent-blue);
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    display: inline-block;
+    margin-bottom: 1.2rem;
+}
+
+/* --- Sección Hero (Principal) --- */
+.hero {
+    text-align: center;
+    padding: 3rem 1.5rem 5rem;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
 }
 
 .hero-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* --- Botones --- */
+.btn-main, .btn-cta-nav {
+    background-color: var(--accent-green);
+    color: #ffffff;
+    padding: 0.75rem 1.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+}
+
+.btn-main:hover, .btn-cta-nav:hover {
+    background-color: var(--accent-green-bright);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
     background: transparent;
-    color: #c9d1d9;
+    color: var(--text-muted);
     padding: 0.75rem 1.5rem;
-    border: 1px solid #30363d;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.2s;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    display: inline-block;
 }
 
 .btn-secondary:hover {
-    border-color: #8b949e;
+    border-color: var(--text-secondary);
     background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-2px);
 }
 
-.icon-box {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+.full-width {
+    width: 100%;
+}
+
+/* --- Sección de Características (Features) --- */
+.features {
+    max-width: 1100px;
+    margin: 0 auto 5rem;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 .card {
-    transition: transform 0.2s, border-color 0.2s;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: left;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
     transform: translateY(-4px);
-    border-color: #58a6ff;
+    border-color: var(--border-highlight);
+    box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+}
+
+.icon-box {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* --- Sección de Precios (Pricing) --- */
+.pricing {
+    max-width: 500px;
+    margin: 0 auto 6rem;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.pricing-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-header p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
 }
 
 .pricing-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .popular-badge {
     position: absolute;
-    top: 15px;
-    right: -30px;
-    background: #238636;
-    color: white;
+    top: 18px;
+    right: -32px;
+    background: var(--accent-green);
+    color: #ffffff;
     font-size: 0.7rem;
-    font-weight: bold;
-    padding: 4px 30px;
+    font-weight: 700;
+    padding: 4px 35px;
     transform: rotate(45deg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 1rem 0 1.5rem;
 }
 
 .period {
     font-size: 1rem;
-    color: #8b949e;
+    color: var(--text-secondary);
     font-weight: normal;
 }
 
@@ -109,20 +281,25 @@
 }
 
 .features-list li {
-    margin: 0.75rem 0;
-    color: #c9d1d9;
+    margin: 0.85rem 0;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    font-size: 0.95rem;
 }
 
 .features-list span {
-    color: #238636;
+    color: var(--accent-green-bright);
     font-weight: bold;
 }
 
-.full-width {
-    width: 100%;
+/* --- Footer --- */
+footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background: var(--bg-secondary);
 }
 
 .footer-content {
@@ -130,9 +307,23 @@
     flex-direction: column;
     gap: 0.5rem;
     align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
 }
 
 .system-status {
-    color: #238636;
-    font-size: 0.8rem;
+    color: var(--accent-green-bright);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* --- Adaptabilidad Móvil --- */
+@media (max-width: 600px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
 }
