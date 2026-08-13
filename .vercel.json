@@ -4,7 +4,9 @@
     {
       "src": "api/*.py",
       "use": "@vercel/python",
-      "config": { "maxDuration": 30 }
+      "config": {
+        "maxDuration": 60
+      }
     }
   ],
   "routes": [
@@ -17,15 +19,24 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
       ]
     }
   ],
   "crons": [
     {
-      "path": "/api/aura",
+      "path": "/api/auras",
       "schedule": "0 0 * * *"
     },
     {
