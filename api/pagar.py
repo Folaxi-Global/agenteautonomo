@@ -48,7 +48,6 @@ class handler(BaseHTTPRequestHandler):
                 return
 
             # 3. Construcción del flujo centralizado de pago unificado
-            # Aquí defines la URL oficial de tu pasarela de cobro única
             url_checkout_unificado = f"https://link.mercadopago.cl/tupagoautorizado?ref={subdominio}" 
 
             # 4. Responder con éxito detallado (Ideal para APIs frontend o WebViews)
