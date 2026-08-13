@@ -7,7 +7,7 @@ from supabase import create_client, Client
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-MP_ACCESS_TOKEN = os.environ.get("MP_ACCESS_TOKEN") # Tu Token de acceso de Mercado Pago
+MP_ACCESS_TOKEN = os.environ.get("MP_ACCESS_TOKEN")  # Tu Token de acceso de Mercado Pago
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -54,11 +54,11 @@ class handler(BaseHTTPRequestHandler):
                     "title": f"Suscripción a {nombre_proyecto} ({subdominio})",
                     "quantity": 1,
                     "unit_price": 29.00,
-                    "currency_id": "USD" # O tu moneda local correspondiente
+                    "currency_id": "USD"
                 }],
                 "back_urls": {
-                    "success": f"https://{subdominio}.vartens.com/gracias",
-                    "failure": f"https://{subdominio}.vartens.com/error"
+                    "success": f"https://{subdominio}.vertensglobal.com/gracias",
+                    "failure": f"https://{subdominio}.vertensglobal.com/error"
                 },
                 "auto_return": "approved"
             }
@@ -71,7 +71,7 @@ class handler(BaseHTTPRequestHandler):
 
             with urllib.request.urlopen(req) as resp:
                 mp_response = json.loads(resp.read().decode('utf-8'))
-                url_checkout_unificado = mp_response.get("init_point") # Link de pago oficial generado por MP
+                url_checkout_unificado = mp_response.get("init_point")  # Link de pago oficial generado por MP
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
