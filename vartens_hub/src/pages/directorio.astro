@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Datos de ejemplo (¡Aquí conectarás luego tu base de datos de Python o los cargarás manualmente! Ahora solo es para que cargue la página).
+const saas_list = [
+    { id: 1, name: 'SaaS Ventas Rápidas', description: 'CRM simple para PYMEs de servicios.', category: 'Ventas', url: '#' },
+    { id: 2, name: 'SaaS Cobranza Pro', description: 'Automatiza facturas vencidas y seguimiento.', category: 'Finanzas', url: '#' },
+    { id: 3, name: 'SaaS RRHH Fácil', description: 'Gestión de personal y nómina básica.', category: 'Operaciones', url: '#' },
+    { id: 4, name: 'SaaS Inventario Bot', description: 'Control de stock inteligente.', category: 'Operaciones', url: '#' },
+    { id: 5, name: 'SaaS Marketing Local', description: 'Anuncios automáticos para negocios físicos.', category: 'Marketing', url: '#' },
+    // Puedes agregar los 100 aquí eventualmente
+];
+
+// Simulación de categorías únicas
+const categories = [...new Set(saas_list.map(item => item.category))];
+---
+
+<Layout title="Directorio de Soluciones Vartens">
+  <div class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <a href="/" class="text-2xl font-bold text-gray-950">Vartens</a>
+          <span class="text-gray-300">|</span>
+          <span class="text-gray-600">Directorio de Soluciones</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="/#vision" class="text-gray-600 hover:text-blue-600 transition">Nuestra Visión</a>
+            <a href="mailto:alianzas@vartens.com" class="text-gray-600 hover:text-blue-600 transition">Contacto Alianzas</a>
+            <a href="/" class="rounded-full bg-gray-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 transition">Volver al Inicio</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-16">
+      <div class="text-center mb-16">
+        <h1 class="text-6xl font-extrabold tracking-tighter text-gray-950 leading-tight">
+            Todas las Soluciones <span class="text-blue-600">Vartens</span>
+        </h1>
+        <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto font-light">
+          Explora nuestro ecosistema de herramientas digitales diseñadas para escalar tu negocio en Latinoamérica.
+        </p>
+      </div>
+
+      <!-- Filtros / Categorías (Opcional) -->
+      <div class="mb-12 flex justify-center gap-3 flex-wrap">
+          <button class="px-5 py-2 rounded-full bg-blue-600 text-white text-sm font-medium shadow-inner">Todos</button>
+          {categories.map(cat => (
+              <button class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 hover:border-gray-300 text-sm font-medium transition hover:shadow-sm">{cat}</button>
+          ))}
+      </div>
+
+      <!-- Grilla de Tarjetas del Directorio -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {saas_list.map((saas) => (
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col">
+            <div class="flex items-center justify-between mb-5">
+                <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 border border-blue-100">
+                    {saas.category}
+                </span>
+                <span class="text-gray-300 text-3xl font-thin group-hover:text-blue-400 transition">
+                    {String(saas.id).padStart(3, '0')}
+                </span>
+            </div>
+            <h3 class="text-2xl font-semibold text-gray-950 group-hover:text-blue-600 transition">{saas.name}</h3>
+            <p class="mt-3 text-gray-600 leading-relaxed flex-grow">{saas.description}</p>
+            <div class="mt-8">
+              <a href={saas.url} class="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-6 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-gray-700 transition-all group-hover:bg-blue-600">
+                Conocer más <span class="ml-2 transition-transform group-hover:translate-x-1">→</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Sección vacía si no hay SaaS -->
+       {saas_list.length === 0 && (
+          <div class="text-center py-24 border-2 border-dashed border-gray-200 rounded-3xl bg-white">
+            <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <h3 class="mt-6 text-2xl font-semibold text-gray-900">Próximamente</h3>
+            <p class="mt-3 text-gray-500">Estamos trabajando para lanzar las primeras soluciones para PYMEs en Latinoamérica.</p>
+          </div>
+       )}
+
+    </main>
+
+     <footer class="border-t border-gray-100 bg-white mt-24 py-12">
+        <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
+            <p>&copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+    /* Pequeño estilo extra para fuentes bonitas si Geist no está disponible */
+    body {
+        font-family: Inter, system-ui, sans-serif;
+    }
+</style>
