@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: Puedes agregar estilos globales adicionales aquí */
+:root {
+  --accent: 12, 55, 153; /* Ejemplo de color base */
+  --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #4f46e5 30%, white 60%);
+}
+
+html {
+  font-family: system-ui, sans-serif;
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+code {
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
