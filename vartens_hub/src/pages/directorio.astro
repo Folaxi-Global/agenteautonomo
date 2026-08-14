@@ -1,198 +1,127 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-// Datos de ejemplo optimizados
-const saas_list = [
-    { id: 1, name: 'SaaS Ventas Rápidas', description: 'CRM simple y automatizado para PYMEs de servicios en crecimiento.', category: 'Ventas', url: '#' },
-    { id: 2, name: 'SaaS Cobranza Pro', description: 'Automatiza facturas vencidas, recordatorios y seguimiento de pagos.', category: 'Finanzas', url: '#' },
-    { id: 3, name: 'SaaS RRHH Fácil', description: 'Gestión inteligente de personal, asistencia y nómina básica.', category: 'Operaciones', url: '#' },
-    { id: 4, name: 'SaaS Inventario Bot', description: 'Control de stock en tiempo real con alertas de reabastecimiento inteligente.', category: 'Operaciones', url: '#' },
-    { id: 5, name: 'SaaS Marketing Local', description: 'Campañas y anuncios automatizados para potenciar negocios físicos.', category: 'Marketing', url: '#' },
-];
-
-const categories = ['Todos', ...new Set(saas_list.map(item => item.category))];
 ---
 
-<Layout title="Directorio de Soluciones Vartens">
-  <div class="bg-gradient-to-b from-gray-50 via-white to-gray-50 min-h-screen text-gray-900 selection:bg-blue-600 selection:text-white">
+<Layout title="Impulsa tu Negocio en Latinoamérica">
+  <div class="relative isolate overflow-hidden bg-white text-gray-900 selection:bg-blue-600 selection:text-white">
     
-    <!-- Header Pro con el Logo Oficial -->
+    <!-- Header Pro con el Logo Oficial y Enlaces Funcionales -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-xs">
       <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <a href="/" class="flex items-center gap-3 group">
-            <!-- Logo oficial de Vartens (Asegúrate de guardar la imagen como logo.jpg o logo.png en vartens_hub/public/) -->
             <img src="/logo.jpg" alt="Vartens Logo" class="h-10 w-auto rounded-xl object-contain shadow-sm group-hover:scale-105 transition-transform" />
           </a>
           <span class="text-gray-300">/</span>
-          <span class="text-sm font-medium text-gray-500 hidden sm:inline-block">Directorio de Soluciones</span>
+          <span class="text-sm font-medium text-gray-500 hidden sm:inline-block">Ecosistema Tecnológico</span>
         </div>
         <div class="flex items-center gap-6">
-            <a href="/#vision" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Nuestra Visión</a>
-            <a href="mailto:alianzas@vartens.com" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Contacto Alianzas</a>
-            <a href="/" class="rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">Volver al Inicio</a>
+            <a href="/directorio" class="text-sm font-semibold text-gray-700 hover:text-blue-600 transition">Ver Soluciones</a>
+            <a href="#vision" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Nuestra Visión</a>
+            <a href="mailto:alianzas@vartens.com" class="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all shadow-blue-500/20">Contacto Alianzas</a>
         </div>
       </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-16">
-      
-      <!-- Título y buscador -->
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-6 tracking-wide uppercase">
-          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-          Ecosistema Activo
+    <!-- Decoración de fondo sutil -->
+    <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+
+    <div class="px-6 py-20 sm:py-28 lg:px-8">
+      <div class="mx-auto max-w-4xl text-center">
+        
+        <!-- Etiqueta superior de autoridad -->
+        <div class="mb-10 inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-800 shadow-sm hover:border-gray-300 transition-all">
+          <span class="relative flex h-2.5 w-2.5 mr-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600"></span>
+          </span>
+          Ecosistema Vartens | Soluciones Digitales Especializadas para PYMEs LatAm
         </div>
-        <h1 class="text-5xl sm:text-6xl font-black tracking-tight text-gray-950 leading-[1.1]">
-          Soluciones diseñadas para <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">escalar tu PYME</span>
+
+        <!-- Titular Principal (H1) -->
+        <h1 class="text-6xl font-extrabold tracking-tighter text-gray-950 sm:text-8xl leading-[1.1]">
+          Potencia tu Negocio con 100<br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Micro-SaaS Especializados</span>
         </h1>
-        <p class="mt-6 text-lg text-gray-600 font-normal leading-relaxed">
-          Explora nuestro ecosistema de herramientas digitales listas para usar. Cada micro-SaaS está optimizado para resolver un desafío específico de tu negocio.
+        
+        <!-- Párrafo de Descripción -->
+        <p class="mx-auto mt-12 max-w-3xl text-xl sm:text-2xl leading-9 text-gray-600 font-normal antialiased">
+          En Vartens, desarrollamos y operamos herramientas digitales listas para usar, diseñadas específicamente para resolver los dolores agudos de las PYMEs en Latinoamérica. Automatizamos procesos clave para que escalees tu empresa sin complicaciones y en piloto automático.
         </p>
-
-        <!-- Barra de búsqueda interactiva -->
-        <div class="mt-8 relative max-w-xl mx-auto">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-          <input 
-            type="text" 
-            id="search-input" 
-            placeholder="Busca por nombre o categoría de solución..." 
-            class="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-800 placeholder-gray-400 text-sm transition-all"
+        
+        <!-- Botones de Acción - Ultra Pro -->
+        <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-x-10">
+          <a 
+            href="/directorio" 
+            class="w-full sm:w-auto group relative rounded-2xl bg-blue-600 px-10 py-5 text-xl font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 ease-out hover:bg-blue-700 hover:shadow-blue-600/30 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center"
           >
+            <span class="relative z-10 flex items-center">
+              Ver Nuestras Soluciones
+              <svg class="ml-3 w-6 h-6 transition-transform group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </span>
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+          </a>
+          
+          <a 
+            href="mailto:alianzas@vartens.com" 
+            class="w-full sm:w-auto group text-xl font-semibold leading-6 text-gray-800 transition-all hover:text-blue-700 flex items-center justify-center py-3"
+          >
+            Contacto Alianzas <span aria-hidden="true" class="ml-3 transition-transform group-hover:translate-x-1.5">→</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sección de Visión / Propuesta de Valor Interactiva -->
+    <section id="vision" class="py-20 bg-gray-50/50 border-t border-gray-100">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-950">¿Por qué elegir Vartens?</h2>
+          <p class="mt-4 text-gray-600 text-lg">Construimos infraestructura tecnológica que se adapta a las necesidades reales de tu empresa.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 font-bold text-xl">01</div>
+            <h3 class="text-xl font-bold text-gray-950">Listos para Usar</h3>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Sin esperas ni desarrollos complejos. Herramientas activas desde el primer día para tu PYME.</p>
+          </div>
+
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 font-bold text-xl">02</div>
+            <h3 class="text-xl font-bold text-gray-950">Enfoque Regional</h3>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Diseñados pensando en las normativas, moneda y dinámicas comerciales de Latinoamérica.</p>
+          </div>
+
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-6 font-bold text-xl">03</div>
+            <h3 class="text-xl font-bold text-gray-950">Escalabilidad Real</h3>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Automatiza operaciones repetitivas y libera tiempo valioso para hacer crecer tus ventas.</p>
+          </div>
+        </div>
+
+        <div class="mt-16 text-center">
+          <a href="/directorio" class="inline-flex items-center justify-center rounded-xl bg-gray-950 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-blue-600 transition-all">
+            Explorar todas las soluciones en el directorio →
+          </a>
         </div>
       </div>
-
-      <!-- Filtros Dinámicos por Categoría -->
-      <div class="mb-12 flex justify-center gap-2.5 flex-wrap" id="category-filters">
-          {categories.map((cat, index) => (
-              <button 
-                data-category={cat}
-                class={`category-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 shadow-xs ${index === 0 ? 'bg-blue-600 text-white shadow-blue-500/20 shadow-md' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'}`}
-              >
-                {cat}
-              </button>
-          ))}
-      </div>
-
-      <!-- Grilla de Tarjetas -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="saas-grid">
-        {saas_list.map((saas) => (
-          <div 
-            class="saas-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 group flex flex-col relative overflow-hidden"
-            data-category={saas.category}
-            data-name={saas.name.toLowerCase()}
-            data-description={saas.description.toLowerCase()}
-          >
-            <!-- Línea superior decorativa con gradiente al hacer hover -->
-            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-            <div class="flex items-center justify-between mb-6">
-                <span class="inline-flex items-center rounded-lg bg-blue-50/80 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100/50">
-                    {saas.category}
-                </span>
-                <span class="text-gray-300 font-mono text-xl font-light group-hover:text-blue-500 transition-colors">
-                    #{String(saas.id).padStart(3, '0')}
-                </span>
-            </div>
-            
-            <h3 class="text-2xl font-bold text-gray-950 group-hover:text-blue-600 transition-colors">{saas.name}</h3>
-            <p class="mt-3 text-gray-600 text-sm leading-relaxed flex-grow">{saas.description}</p>
-            
-            <div class="mt-8 pt-6 border-t border-gray-100">
-              <a href={saas.url} class="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-5 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-blue-500/25">
-                Conocer solución <span class="ml-2 transition-transform group-hover:translate-x-1">→</span>
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <!-- Estado vacío (Oculto por defecto, manejado por JS) -->
-      <div id="no-results" class="hidden text-center py-24 border border-dashed border-gray-200 rounded-3xl bg-white mt-4">
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <h3 class="text-xl font-bold text-gray-900">No encontramos resultados</h3>
-        <p class="mt-2 text-sm text-gray-500">Prueba buscando con otras palabras clave o categorías.</p>
-      </div>
-
-    </main>
+    </section>
 
     <!-- Footer Pro -->
-     <footer class="border-t border-gray-100 bg-white mt-24 py-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.</p>
-            <div class="flex items-center gap-6">
-              <a href="/" class="hover:text-blue-600 transition">Inicio</a>
-              <a href="mailto:alianzas@vartens.com" class="hover:text-blue-600 transition">Soporte y Alianzas</a>
-            </div>
+    <footer class="border-t border-gray-100 bg-white py-12">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
+        <p>&copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.</p>
+        <div class="flex items-center gap-6">
+          <a href="/directorio" class="hover:text-blue-600 transition">Directorio</a>
+          <a href="mailto:alianzas@vartens.com" class="hover:text-blue-600 transition">Soporte y Alianzas</a>
         </div>
+      </div>
     </footer>
+
   </div>
 </Layout>
-
-<!-- Script ultraligero para filtrado y búsqueda en tiempo real -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search-input') as HTMLInputElement;
-    const categoryBtns = document.querySelectorAll('.category-btn');
-    const saasCards = document.querySelectorAll('.saas-card');
-    const noResults = document.getElementById('no-results');
-
-    let currentCategory = 'Todos';
-    let searchQuery = '';
-
-    function filterCards() {
-      let visibleCount = 0;
-
-      saasCards.forEach((card) => {
-        const category = card.getAttribute('data-category');
-        const name = card.getAttribute('data-name') || '';
-        const description = card.getAttribute('data-description') || '';
-
-        const matchesCategory = currentCategory === 'Todos' || category === currentCategory;
-        const matchesSearch = name.includes(searchQuery) || description.includes(searchQuery);
-
-        if (matchesCategory && matchesSearch) {
-          (card as HTMLElement).style.display = 'flex';
-          visibleCount++;
-        } else {
-          (card as HTMLElement).style.display = 'none';
-        }
-      });
-
-      if (noResults) {
-        if (visibleCount === 0) {
-          noResults.classList.remove('hidden');
-        } else {
-          noResults.classList.add('hidden');
-        }
-      }
-    }
-
-    // Evento de búsqueda
-    searchInput?.addEventListener('input', (e) => {
-      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterCards();
-    });
-
-    // Evento de categorías
-    categoryBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        categoryBtns.forEach(b => {
-          b.classList.remove('bg-blue-600', 'text-white', 'shadow-blue-500/20', 'shadow-md');
-          b.classList.add('bg-white', 'border', 'border-gray-200', 'text-gray-700');
-        });
-        
-        btn.classList.remove('bg-white', 'border', 'border-gray-200', 'text-gray-700');
-        btn.classList.add('bg-blue-600', 'text-white', 'shadow-blue-500/20', 'shadow-md');
-
-        currentCategory = btn.getAttribute('data-category') || 'Todos';
-        filterCards();
-      });
-    });
-  });
-</script>
 
 <style>
     body {
