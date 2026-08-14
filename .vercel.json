@@ -40,6 +40,42 @@
       "schedule": "0 0 * * *"
     },
     {
+      "path": "/api/difusion_automatica",
+      "schedule": "30 0 * * *"
+    },
+    {
+      "path": "/api/auras",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/difusion_automatica",
+      "schedule": "30 6 * * *"
+    },
+    {
+      "path": "/api/auras",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/difusion_automatica",
+      "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/auras",
+      "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/difusion_automatica",
+      "schedule": "30 15 * * *"
+    },
+    {
+      "path": "/api/auras",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/difusion_automatica",
+      "schedule": "30 18 * * *"
+    },
+    {
       "path": "/api/evaluar_ciclos",
       "schedule": "0 1 * * *"
     }
