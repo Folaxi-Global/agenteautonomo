@@ -2,13 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización de la conexión
+// Configuración segura
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY;
 
 let saas_list = [];
 
-// Conexión dinámica a tu tabla de proyectos
+// Conexión dinámica
 if (supabaseUrl && supabaseKey) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const { data } = await supabase
@@ -19,7 +19,7 @@ if (supabaseUrl && supabaseKey) {
   saas_list = data || [];
 }
 
-// Generar categorías dinámicamente según lo que tengas en la base de datos
+// Generar categorías dinámicamente
 const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'General'))];
 ---
 
@@ -39,7 +39,7 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
         <div class="flex items-center gap-6">
             <a href="/#vision" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Nuestra Visión</a>
             <a href="mailto:alianzas@vartens.com" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Contacto Alianzas</a>
-            <a href="/" class="rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">Volver al Inicio</a>
+            <a href="/" class="rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all duration-300">Volver al Inicio</a>
         </div>
       </nav>
     </header>
@@ -53,15 +53,9 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
         <h1 class="text-5xl sm:text-6xl font-black tracking-tight text-gray-950 leading-[1.1]">
           Soluciones diseñadas para <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">escalar tu PYME</span>
         </h1>
-        <p class="mt-6 text-lg text-gray-600 font-normal leading-relaxed">
-          Explora nuestro ecosistema de herramientas digitales listas para usar. Cada micro-SaaS está optimizado para resolver un desafío específico de tu negocio.
-        </p>
 
         <div class="mt-8 relative max-w-xl mx-auto">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-          <input type="text" id="search-input" placeholder="Busca por nombre o categoría..." class="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-800 placeholder-gray-400 text-sm transition-all">
+          <input type="text" id="search-input" placeholder="Busca por nombre o categoría..." class="w-full pl-6 pr-4 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-600 outline-none text-sm transition-all">
         </div>
       </div>
 
@@ -74,23 +68,20 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
           ))}
       </div>
 
-      <!-- Grilla de Tarjetas Dinámica -->
+      <!-- Grilla de Tarjetas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="saas-grid">
         {saas_list.map((saas, index) => (
-          <div class="saas-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col relative overflow-hidden"
+          <div class="saas-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
                data-category={saas.estado || 'General'}
                data-name={saas.nombre_proyecto.toLowerCase()}>
-            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="flex items-center justify-between mb-6">
-                <span class="inline-flex items-center rounded-lg bg-blue-50/80 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100/50">
-                    {saas.estado || 'General'}
-                </span>
-                <span class="text-gray-300 font-mono text-xl font-light group-hover:text-blue-500">#{String(index + 1).padStart(3, '0')}</span>
+                <span class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{saas.estado || 'General'}</span>
+                <span class="text-gray-300 font-mono text-xl">#{String(index + 1).padStart(3, '0')}</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-950 group-hover:text-blue-600 transition-colors">{saas.nombre_proyecto}</h3>
+            <h3 class="text-2xl font-bold text-gray-950 group-hover:text-blue-600">{saas.nombre_proyecto}</h3>
             <p class="mt-3 text-gray-600 text-sm leading-relaxed flex-grow">{saas.descripcion_oferta}</p>
             <div class="mt-8 pt-6 border-t border-gray-100">
-              <a href={`https://${saas.subdominio}.vartens.com`} target="_blank" class="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-5 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition-all duration-300">
+              <a href={`https://${saas.subdominio}.vartens.com`} target="_blank" class="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-5 py-3.5 text-sm font-bold text-white hover:bg-blue-600 transition-all">
                 Conocer solución →
               </a>
             </div>
@@ -99,35 +90,34 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
       </div>
     </main>
 
-    <footer class="border-t border-gray-100 bg-white mt-24 py-12">
-        <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Vartens Technologies.
-        </div>
+    <footer class="border-t border-gray-100 bg-white mt-24 py-12 text-center text-sm text-gray-500">
+        &copy; {new Date().getFullYear()} Vartens Technologies.
     </footer>
   </div>
 </Layout>
 
 <script>
-  // Script de filtrado dinámico (funciona igual pero ahora sobre los datos de Supabase)
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
   const categoryBtns = document.querySelectorAll('.category-btn');
   const saasCards = document.querySelectorAll('.saas-card');
 
-  searchInput.addEventListener('input', (e) => {
+  searchInput?.addEventListener('input', (e) => {
     const val = (e.target as HTMLInputElement).value.toLowerCase();
     saasCards.forEach(c => {
-      const name = c.getAttribute('data-name')!;
+      const name = c.getAttribute('data-name') || '';
       (c as HTMLElement).style.display = name.includes(val) ? 'flex' : 'none';
     });
   });
 
-  categoryBtns.forEach(btn => btn.addEventListener('click', () => {
-    const cat = btn.getAttribute('data-category')!;
-    categoryBtns.forEach(b => b.classList.replace('bg-blue-600', 'bg-white'));
-    btn.classList.replace('bg-white', 'bg-blue-600');
-    saasCards.forEach(c => {
-      const cardCat = c.getAttribute('data-category')!;
-      (c as HTMLElement).style.display = (cat === 'Todos' || cardCat === cat) ? 'flex' : 'none';
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.getAttribute('data-category')!;
+      categoryBtns.forEach(b => b.classList.replace('bg-blue-600', 'bg-white'));
+      btn.classList.replace('bg-white', 'bg-blue-600');
+      saasCards.forEach(c => {
+        const cardCat = c.getAttribute('data-category')!;
+        (c as HTMLElement).style.display = (cat === 'Todos' || cardCat === cat) ? 'flex' : 'none';
+      });
     });
-  }));
+  });
 </script>
