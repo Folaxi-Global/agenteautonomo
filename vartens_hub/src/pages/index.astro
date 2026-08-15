@@ -49,7 +49,6 @@ if (supabaseUrl && supabaseKey) {
     <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
       <div class="mx-auto max-w-4xl text-center">
         
-        <!-- Etiqueta superior de autoridad -->
         <div class="mb-10 inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-800 shadow-sm hover:border-gray-300 transition-all">
           <span class="relative flex h-2.5 w-2.5 mr-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
@@ -58,42 +57,31 @@ if (supabaseUrl && supabaseKey) {
           Ecosistema Vartens | Soluciones Digitales Especializadas para PYMEs LatAm
         </div>
 
-        <!-- Titular Principal (H1) - Enfocado en el beneficio -->
         <h1 class="text-6xl font-extrabold tracking-tighter text-gray-950 sm:text-8xl leading-[1.1]">
           Potencia tu Negocio con 100<br />
           <span class="text-blue-600">Micro-SaaS Especializados</span>
         </h1>
         
-        <!-- Párrafo de Descripción - Lenguaje de negocio claro -->
         <p class="mx-auto mt-12 max-w-3xl text-2xl leading-9 text-gray-600 font-normal antialiased">
           En Vartens, desarrollamos y operamos herramientas digitales listas para usar, diseñadas específicamente para resolver los dolores agudos de las PYMEs en Latinoamérica. Automatizamos procesos clave para que escalees tu empresa sin complicaciones y en piloto automático.
         </p>
         
-        <!-- Botones de Acción - Estilo "Ultra Pro" -->
         <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-x-10">
-          <a 
-            href="/directorio" 
-            class="w-full sm:w-auto group relative rounded-2xl bg-blue-600 px-10 py-5 text-xl font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 ease-out hover:bg-blue-700 hover:shadow-blue-600/30 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center"
-          >
+          <a href="/directorio" class="w-full sm:w-auto group relative rounded-2xl bg-blue-600 px-10 py-5 text-xl font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 ease-out hover:bg-blue-700 hover:shadow-blue-600/30 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center">
             <span class="relative z-10 flex items-center">
               Ver Nuestras Soluciones
               <svg class="ml-3 w-6 h-6 transition-transform group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </span>
             <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
           </a>
-          
-          <a 
-            href="mailto:alianzas@vartens.com" 
-            class="w-full sm:w-auto group text-xl font-medium leading-6 text-gray-800 transition-all hover:text-blue-700 flex items-center justify-center py-3"
-          >
+          <a href="mailto:alianzas@vartens.com" class="w-full sm:w-auto group text-xl font-medium leading-6 text-gray-800 transition-all hover:text-blue-700 flex items-center justify-center py-3">
             Contacto Alianzas <span aria-hidden="true" class="ml-3 transition-transform group-hover:translate-x-1.5">→</span>
           </a>
         </div>
-
       </div>
     </div>
 
-    <!-- SECCIÓN DE PROYECTOS DINÁMICOS (Integrado con Supabase en el index) -->
+    <!-- SECCIÓN DE PROYECTOS DINÁMICOS -->
     <section class="py-20 bg-white border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center max-w-2xl mx-auto mb-16">
@@ -116,8 +104,13 @@ if (supabaseUrl && supabaseKey) {
                 </a>
               </div>
             </div>
-          ))
-).
+          )) : (
+            <div class="col-span-3 text-center py-8 text-gray-500">Cargando proyectos en tiempo real...</div>
+          )}
+        </div>
+      </div>
+    </section>
+
     <!-- Sección de Visión -->
     <section id="vision" class="py-20 bg-gray-50/50 border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-6">
@@ -130,19 +123,17 @@ if (supabaseUrl && supabaseKey) {
           <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 font-bold text-xl">01</div>
             <h3 class="text-xl font-bold text-gray-950">Listos para Operar</h3>
-            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Herramientas digitales activas desde el primer día, diseñadas para no requerir configuraciones técnicas complejas.</p>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Herramientas digitales activas desde el primer día.</p>
           </div>
-
           <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 font-bold text-xl">02</div>
             <h3 class="text-xl font-bold text-gray-950">Especialización LatAm</h3>
-            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Soluciones adaptadas a la realidad operativa, comercial y de gestión de las empresas en la región.</p>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Soluciones adaptadas a la realidad operativa de la región.</p>
           </div>
-
           <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-6 font-bold text-xl">03</div>
             <h3 class="text-xl font-bold text-gray-950">Piloto Automático</h3>
-            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Automatiza procesos rutinarios de cobros, ventas y gestión para liberar tiempo valioso en tu negocio.</p>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Automatiza procesos rutinarios de ventas y gestión.</p>
           </div>
         </div>
 
@@ -154,7 +145,6 @@ if (supabaseUrl && supabaseKey) {
       </div>
     </section>
 
-    <!-- Footer Pro -->
     <footer class="border-t border-gray-100 bg-white py-12">
       <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
         <p>&copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.</p>
@@ -164,12 +154,9 @@ if (supabaseUrl && supabaseKey) {
         </div>
       </div>
     </footer>
-
   </div>
 </Layout>
 
 <style>
-    body {
-        font-family: Inter, system-ui, -apple-system, sans-serif;
-    }
+  body { font-family: Inter, system-ui, -apple-system, sans-serif; }
 </style>
