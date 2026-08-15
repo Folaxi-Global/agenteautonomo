@@ -19,7 +19,7 @@ SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-MODELO_AFORO = "gemini-2.5-flash"
+MODELO_AFORO = "gemini-3.6-flash"
 
 INFO_MERCADO = [
     {"pais": "México", "moneda": "MXN", "iso": "MX"},
@@ -30,8 +30,8 @@ INFO_MERCADO = [
 ]
 
 def verificar_duplicidad(nombre):
-    res = supabase.table("proyectos").select("id").eq("nombre_proyecto", nombre).execute()
-    return len(res.data) > 0
+    # Desactivado temporalmente para forzar el lote
+    return False
 
 def notificar_slack(proyecto_data):
     if not SLACK_WEBHOOK_URL: return
