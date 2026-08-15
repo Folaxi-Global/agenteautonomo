@@ -28,16 +28,17 @@ class handler(BaseHTTPRequestHandler):
             descripcion = proyecto.get('descripcion_oferta', 'Herramienta digital inteligente.')
 
             # 2. Generar o simular la estrategia de marketing de forma directa y segura
-            # Esto evita llamadas HTTP internas complejas que puedan dar 404 según la red de Vercel
             host = self.headers.get('Host', 'localhost')
             protocol = 'https' if 'vercel.app' in host else 'http'
             marketing_url = f"{protocol}://{host}/api/marketing_viral?subdominio={subdominio}"
             
-            marketing_resp = requests.get(marketing_url, timeout=20)
-            
-            if marketing_resp.status_code == 200:
-                marketing_data = marketing_resp.json().get('campaña', {})
-            else:
+            try:
+                marketing_resp = requests.get(marketing_url, timeout=20)
+                if marketing_resp.status_code == 200:
+                    marketing_data = marketing_resp.json().get('campaña', {})
+                else:
+                    raise Exception("Fallo marketing externo")
+            except:
                 # Fallback de respaldo por si el módulo externo tarda o falla puntualmente
                 marketing_data = {
                     "gancho_video_3s": f"¿Cansado de procesos lentos? Descubre {nombre_proyecto}.",
@@ -79,7 +80,4 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             error_res = {"status": "error", "detalles": str(e)}
             self.wfile.write(json.dumps(error_res, ensure_ascii=False).encode('utf-8'))
-        except Exception as e:
-            self.send_response(500)
-            self.end_headers()
-            self.wfile.write(f"Error detallado: {str(e)}".encode('utf-8'))
+      
