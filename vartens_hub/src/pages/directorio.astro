@@ -2,174 +2,100 @@
 import Layout from '../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
-// Múltiples alternativas para capturar las credenciales sin importar cómo estén guardadas en Vercel
+// Intentamos capturar las credenciales de todas las formas posibles
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseKey = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+const supabaseKey = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
 let saas_list = [];
-let connectionError = null;
+let connectionReady = false;
 
 if (supabaseUrl && supabaseKey) {
   try {
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('proyectos')
       .select('*')
       .order('fecha_creacion', { ascending: false });
     
-    if (error) {
-      connectionError = error.message;
-    } else {
-      saas_list = data || [];
+    if (data) {
+      saas_list = data;
+      connectionReady = true;
     }
-  } catch (e: any) {
-    connectionError = e.message;
+  } catch (e) {
+    console.error("Error conectando a Supabase:", e);
   }
-} else {
-  connectionError = "Faltan las credenciales de Supabase en el entorno.";
 }
 
-const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || item.pais_objetivo || 'General'))];
+const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'General'))];
 ---
 
 <Layout title="Directorio de Soluciones Vartens">
-  <div class="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen text-slate-900 selection:bg-blue-600 selection:text-white">
+  <div class="min-h-screen bg-slate-50 selection:bg-blue-600 selection:text-white">
     
-    <!-- Header Ultra Pro -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <a href="/" class="flex items-center gap-3 group">
-            <img src="/logo.jpg" alt="Vartens Logo" class="h-10 w-auto rounded-xl object-contain shadow-sm group-hover:scale-105 transition-transform" />
-          </a>
-          <span class="text-slate-300">/</span>
-          <span class="text-sm font-medium text-slate-500 hidden sm:inline-block">Directorio Global</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 hidden sm:inline-block">
-              {saas_list.length} Soluciones Disponibles
-            </span>
-            <a href="/" class="rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all">Volver al Inicio</a>
-        </div>
+        <a href="/" class="flex items-center gap-2 group">
+          <img src="/logo.jpg" alt="Logo" class="h-8 w-8 rounded-lg object-cover" />
+          <span class="font-bold text-lg">Vartens</span>
+        </a>
+        <a href="/" class="text-sm font-medium hover:text-blue-600">Volver al Inicio</a>
       </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-16">
-      
-      {connectionError && (
-        <div class="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-center text-sm font-medium max-w-xl mx-auto">
-          ⚠️ Aviso de conexión: {connectionError}
-        </div>
-      )}
-
-      <!-- Título y Controles Pro -->
-      <div class="text-center max-w-3xl mx-auto mb-16 space-y-6">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-wide uppercase shadow-2xs">
-          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-          Ecosistema Conectado en Tiempo Real
-        </div>
-        <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-slate-950 leading-[1.1]">
-          Soluciones diseñadas para <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">escalar tu PYME</span>
-        </h1>
-        <p class="text-slate-600 text-lg">
-          Filtra, busca y accede instantáneamente a cualquiera de nuestros micro-SaaS especializados.
-        </p>
-
-        <!-- Barra de Búsqueda y Desplegable Pro -->
-        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-2xl mx-auto pt-4">
-          <div class="relative w-full sm:flex-grow">
-            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </span>
-            <input type="text" id="search-input" placeholder="Buscar por nombre de solución..." class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl shadow-xs focus:ring-2 focus:ring-blue-600 outline-none text-sm text-slate-800 transition-all">
-          </div>
-
-          <select id="category-select" class="w-full sm:w-56 px-4 py-3.5 bg-white border border-slate-200 rounded-2xl shadow-xs focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium text-slate-700 cursor-pointer">
+    <main class="max-w-7xl mx-auto px-6 py-12">
+      <div class="mb-12 space-y-4">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Directorio de Soluciones</h1>
+        <p class="text-slate-500">Explora nuestro ecosistema de herramientas automatizadas.</p>
+        
+        <div class="flex flex-col md:flex-row gap-4">
+          <input type="text" id="search-input" placeholder="Buscar proyecto..." class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
+          <select id="category-select" class="px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
             {categories.map(cat => <option value={cat}>{cat}</option>)}
           </select>
         </div>
       </div>
 
-      <!-- Grilla de Tarjetas -->
-      {saas_list.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="saas-grid">
-          {saas_list.map((saas, index) => (
-            <div class="saas-card bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col relative overflow-hidden"
-                 data-category={saas.estado || saas.pais_objetivo || 'General'}
-                 data-name={saas.nombre_proyecto ? saas.nombre_proyecto.toLowerCase() : ''}>
-              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              
-              <div class="flex items-center justify-between mb-6">
-                  <span class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100">
-                      {saas.estado || saas.pais_objetivo || 'General'}
-                  </span>
-                  <span class="text-slate-300 font-mono text-sm">#{String(index + 1).padStart(3, '0')}</span>
-              </div>
-
-              <h3 class="text-2xl font-bold text-slate-950 group-hover:text-blue-600 transition-colors">{saas.nombre_proyecto || 'Sin Nombre'}</h3>
-              <p class="mt-3 text-slate-600 text-sm leading-relaxed flex-grow">{saas.descripcion_oferta || 'Sin descripción disponible.'}</p>
-              
-              <div class="mt-8 pt-6 border-t border-slate-100">
-                <!-- Enlace dinámico directo al subdominio del producto -->
-                <a href={`https://${saas.subdominio || 'app'}.vartens.com`} target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition-all duration-300">
-                  Conocer solución →
-                </a>
-              </div>
+      <div id="saas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {saas_list.length > 0 ? saas_list.map((saas) => (
+          <div class="saas-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col"
+               data-category={saas.estado || 'General'}
+               data-name={(saas.nombre_proyecto || '').toLowerCase()}>
+            <div class="flex justify-between items-start mb-4">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded-md">{saas.estado || 'Activo'}</span>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div class="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200 max-w-xl mx-auto shadow-sm">
-          <h3 class="text-xl font-bold text-slate-800">No hay proyectos sincronizados</h3>
-          <p class="mt-2 text-sm text-slate-500">Verifica que las políticas RLS en Supabase estén activas o que existan registros en la tabla 'proyectos'.</p>
-        </div>
-      )}
-
-      <!-- Estado vacío para búsqueda -->
-      <div id="no-results" class="hidden text-center py-20 text-slate-500 bg-white rounded-3xl border border-slate-200 mt-6 shadow-sm">
-        <h3 class="text-lg font-bold text-slate-800">No se encontraron coincidencias</h3>
-        <p class="text-sm text-slate-500 mt-1">Intenta con otro término de búsqueda o categoría.</p>
+            <h3 class="text-xl font-bold mb-2">{saas.nombre_proyecto || 'Proyecto'}</h3>
+            <p class="text-slate-600 text-sm mb-6 flex-grow">{saas.descripcion_oferta || 'Sin descripción'}</p>
+            <a href={`https://${saas.subdominio}.vartens.com`} target="_blank" rel="noopener noreferrer" 
+               class="block w-full py-3 text-center bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition-colors">
+               Ver Producto
+            </a>
+          </div>
+        )) : (
+          <div class="col-span-full py-20 text-center">
+            <p class="text-slate-400">No se cargaron registros desde Supabase. Revisa las variables de entorno.</p>
+          </div>
+        )}
       </div>
-
     </main>
-
-    <footer class="border-t border-slate-100 bg-white mt-24 py-12 text-center text-sm text-slate-500">
-        &copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.
-    </footer>
   </div>
 </Layout>
 
 <script>
-  const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  const categorySelect = document.getElementById('category-select') as HTMLSelectElement;
-  const saasCards = document.querySelectorAll('.saas-card');
-  const noResults = document.getElementById('no-results');
+  const search = document.getElementById('search-input') as HTMLInputElement;
+  const select = document.getElementById('category-select') as HTMLSelectElement;
+  const cards = document.querySelectorAll('.saas-card');
 
-  const filterCards = () => {
-    const query = searchInput.value.toLowerCase().trim();
-    const selectedCat = categorySelect.value;
-    let visibleCount = 0;
-
-    saasCards.forEach((card) => {
+  const update = () => {
+    const s = search.value.toLowerCase();
+    const c = select.value;
+    cards.forEach(card => {
       const name = card.getAttribute('data-name') || '';
-      const category = card.getAttribute('data-category') || '';
-
-      const matchesSearch = name.includes(query);
-      const matchesCategory = selectedCat === 'Todos' || category === selectedCat;
-
-      if (matchesSearch && matchesCategory) {
-        (card as HTMLElement).style.display = 'flex';
-        visibleCount++;
-      } else {
-        (card as HTMLElement).style.display = 'none';
-      }
+      const cat = card.getAttribute('data-category') || '';
+      const show = name.includes(s) && (c === 'Todos' || cat === c);
+      (card as HTMLElement).style.display = show ? 'flex' : 'none';
     });
-
-    if (noResults) {
-      noResults.classList.toggle('hidden', visibleCount > 0);
-    }
   };
 
-  searchInput?.addEventListener('input', filterCards);
-  categorySelect?.addEventListener('change', filterCards);
+  search.addEventListener('input', update);
+  select.addEventListener('change', update);
 </script>
