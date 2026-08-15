@@ -20,7 +20,7 @@ SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
 
 genai.configure(api_key=GEMINI_API_KEY)
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-MODELO_AFORO = "gemini-1.5-pro"
+MODELO_AFORO = "gemini-3.6-flash"
 
 INFO_MERCADO = [
     {"pais": "México", "moneda": "MXN", "iso": "MX"},
