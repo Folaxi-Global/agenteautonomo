@@ -1,105 +1,260 @@
----
 import Layout from '../layouts/Layout.astro';
-import { createClient } from '@supabase/supabase-js';
 
-// Inicialización segura para evitar errores de build en Vercel
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-let proyectos = [];
-
-if (supabaseUrl && supabaseKey) {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  const { data, error } = await supabase
-    .from('proyectos')
-    .select('*')
-    .eq('estado', 'activo')
-    .order('fecha_creacion', { ascending: false });
-  
-  if (!error) proyectos = data || [];
-}
 ---
+
+
 
 <Layout title="Impulsa tu Negocio en Latinoamérica">
+
   <div class="relative isolate overflow-hidden bg-white text-gray-900 selection:bg-blue-600 selection:text-white">
+
     
-    <!-- Header Pro -->
+
+    <!-- Header Pro con el Logo Oficial y Enlaces Funcionales -->
+
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-xs">
+
       <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
         <div class="flex items-center gap-3">
+
           <a href="/" class="flex items-center gap-3 group">
+
             <img src="/logo.jpg" alt="Vartens Logo" class="h-10 w-auto rounded-xl object-contain shadow-sm group-hover:scale-105 transition-transform" />
+
           </a>
-          <span class="text-sm font-medium text-gray-500 hidden sm:inline-block">/ Ecosistema Tecnológico</span>
+
+          <span class="text-gray-300">/</span>
+
+          <span class="text-sm font-medium text-gray-500 hidden sm:inline-block">Ecosistema Tecnológico</span>
+
         </div>
+
         <div class="flex items-center gap-6">
-            <a href="#catalogo" class="text-sm font-semibold text-gray-700 hover:text-blue-600 transition">Ver Soluciones</a>
-            <a href="mailto:alianzas@vartens.com" class="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all">Contacto Alianzas</a>
+
+            <a href="/directorio" class="text-sm font-semibold text-gray-700 hover:text-blue-600 transition">Ver Soluciones</a>
+
+            <a href="#vision" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden md:inline-block">Nuestra Visión</a>
+
+            <a href="mailto:alianzas@vartens.com" class="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all shadow-blue-500/20">Contacto Alianzas</a>
+
         </div>
+
       </nav>
+
     </header>
+
+
+
+    <!-- Decoración de fondo sutil -->
 
     <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
 
-    <!-- Hero Section -->
-    <div class="px-6 py-24 text-center">
-        <div class="mb-10 inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-800 shadow-sm">
+
+
+    <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+
+      <div class="mx-auto max-w-4xl text-center">
+
+        
+
+        <!-- Etiqueta superior de autoridad -->
+
+        <div class="mb-10 inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-800 shadow-sm hover:border-gray-300 transition-all">
+
+          <span class="relative flex h-2.5 w-2.5 mr-3">
+
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
+
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-gray-500"></span>
+
+          </span>
+
           Ecosistema Vartens | Soluciones Digitales Especializadas para PYMEs LatAm
+
         </div>
+
+
+
+        <!-- Titular Principal (H1) - Enfocado en el beneficio -->
+
         <h1 class="text-6xl font-extrabold tracking-tighter text-gray-950 sm:text-8xl leading-[1.1]">
-          Potencia tu Negocio con<br />
+
+          Potencia tu Negocio con 100<br />
+
           <span class="text-blue-600">Micro-SaaS Especializados</span>
+
         </h1>
-        <p class="mx-auto mt-12 max-w-3xl text-2xl leading-9 text-gray-600 font-normal">
-          Desarrollamos herramientas digitales listas para usar, diseñadas para resolver dolores agudos en Latinoamérica. Automatización en piloto automático.
+
+        
+
+        <!-- Párrafo de Descripción - Lenguaje de negocio claro -->
+
+        <p class="mx-auto mt-12 max-w-3xl text-2xl leading-9 text-gray-600 font-normal antialiased">
+
+          En Vartens, desarrollamos y operamos herramientas digitales listas para usar, diseñadas específicamente para resolver los dolores agudos de las PYMEs en Latinoamérica. Automatizamos procesos clave para que escalees tu empresa sin complicaciones y en piloto automático.
+
         </p>
+
+        
+
+        <!-- Botones de Acción - Estilo "Ultra Pro" (Todos funcionales) -->
+
+        <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-x-10">
+
+          <a 
+
+            href="/directorio" 
+
+            class="w-full sm:w-auto group relative rounded-2xl bg-blue-600 px-10 py-5 text-xl font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 ease-out hover:bg-blue-700 hover:shadow-blue-600/30 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center"
+
+          >
+
+            <span class="relative z-10 flex items-center">
+
+              Ver Nuestras Soluciones
+
+              <svg class="ml-3 w-6 h-6 transition-transform group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+
+            </span>
+
+            <!-- Fondo del hover para el degradado -->
+
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+          </a>
+
+          
+
+          <a 
+
+            href="mailto:alianzas@vartens.com" 
+
+            class="w-full sm:w-auto group text-xl font-medium leading-6 text-gray-800 transition-all hover:text-blue-700 flex items-center justify-center py-3"
+
+          >
+
+            Contacto Alianzas <span aria-hidden="true" class="ml-3 transition-transform group-hover:translate-x-1.5">→</span>
+
+          </a>
+
+        </div>
+
+
+
+      </div>
+
     </div>
 
-    <!-- CATÁLOGO DINÁMICO INTEGRADO -->
-    <section id="catalogo" class="py-24 bg-gray-50/50 border-t border-gray-100">
+
+
+    <!-- Sección de Visión para que los enlaces internos funcionen perfectamente -->
+
+    <section id="vision" class="py-20 bg-gray-50/50 border-t border-gray-100">
+
       <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center mb-16">Catálogo de Soluciones</h2>
+
+        <div class="text-center max-w-2xl mx-auto mb-16">
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-950">Nuestra Propuesta de Valor</h2>
+
+          <p class="mt-4 text-gray-600 text-lg">Infraestructura tecnológica optimizada para las necesidades reales del mercado latinoamericano.</p>
+
+        </div>
+
+
+
         <div class="grid md:grid-cols-3 gap-8">
-          {proyectos.length > 0 ? proyectos.map((p) => (
-            <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all">
-              <span class="text-xs font-bold bg-blue-50 text-blue-700 px-3 py-1 rounded-full">{p.pais_objetivo}</span>
-              <h3 class="text-2xl font-bold mt-4">{p.nombre_proyecto}</h3>
-              <p class="mt-3 text-gray-600 text-sm">{p.descripcion_oferta}</p>
-              <div class="mt-8 pt-6 border-t flex justify-between items-center">
-                <span class="font-bold text-lg">{p.precio_mensual} {p.moneda}</span>
-                <a href={`https://${p.subdominio}.vartens.com`} target="_blank" class="text-blue-600 font-semibold hover:underline">Acceder →</a>
-              </div>
-            </div>
-          )) : (
-            <p class="text-center col-span-3 text-gray-500">Cargando catálogo en tiempo real...</p>
-          )}
+
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 font-bold text-xl">01</div>
+
+            <h3 class="text-xl font-bold text-gray-950">Listos para Operar</h3>
+
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Herramientas digitales activas desde el primer día, diseñadas para no requerir configuraciones técnicas complejas.</p>
+
+          </div>
+
+
+
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 font-bold text-xl">02</div>
+
+            <h3 class="text-xl font-bold text-gray-950">Especialización LatAm</h3>
+
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Soluciones adaptadas a la realidad operativa, comercial y de gestión de las empresas en la región.</p>
+
+          </div>
+
+
+
+          <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-6 font-bold text-xl">03</div>
+
+            <h3 class="text-xl font-bold text-gray-950">Piloto Automático</h3>
+
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">Automatiza procesos rutinarios de cobros, ventas y gestión para liberar tiempo valioso en tu negocio.</p>
+
+          </div>
+
         </div>
+
+
+
+        <div class="mt-16 text-center">
+
+          <a href="/directorio" class="inline-flex items-center justify-center rounded-xl bg-gray-950 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-blue-600 transition-all">
+
+            Ver el catálogo completo de soluciones →
+
+          </a>
+
+        </div>
+
       </div>
+
     </section>
 
-    <!-- Visión -->
-    <section id="vision" class="py-20 bg-white border-t border-gray-100">
-      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
-        <div class="bg-gray-50/50 p-8 rounded-3xl border">
-          <h3 class="text-xl font-bold">Listos para Operar</h3>
-          <p class="mt-2 text-sm text-gray-600">Sin configuraciones técnicas complejas.</p>
-        </div>
-        <div class="bg-gray-50/50 p-8 rounded-3xl border">
-          <h3 class="text-xl font-bold">Especialización LatAm</h3>
-          <p class="mt-2 text-sm text-gray-600">Adaptadas a la realidad de la región.</p>
-        </div>
-        <div class="bg-gray-50/50 p-8 rounded-3xl border">
-          <h3 class="text-xl font-bold">Piloto Automático</h3>
-          <p class="mt-2 text-sm text-gray-600">Automatiza ventas y gestión.</p>
-        </div>
-      </div>
-    </section>
 
-    <footer class="border-t bg-white py-12 text-center text-sm text-gray-500">
-      &copy; {new Date().getFullYear()} Vartens Technologies.
+
+    <!-- Footer Pro -->
+
+    <footer class="border-t border-gray-100 bg-white py-12">
+
+      <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
+
+        <p>&copy; {new Date().getFullYear()} Vartens Technologies. Todos los derechos reservados.</p>
+
+        <div class="flex items-center gap-6">
+
+          <a href="/directorio" class="hover:text-blue-600 transition">Directorio</a>
+
+          <a href="mailto:alianzas@vartens.com" class="hover:text-blue-600 transition">Soporte y Alianzas</a>
+
+        </div>
+
+      </div>
+
     </footer>
+
+
+
   </div>
+
 </Layout>
 
+
+
 <style>
-    body { font-family: Inter, system-ui, -apple-system, sans-serif; }
-</style>
+
+    body {
+
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+
+    }
+
+</style> 
+
