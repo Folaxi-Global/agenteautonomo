@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { createClient } from '@supabase/supabase-js';
+
+// Obtenemos el subdominio de la URL (ej: boletaflash)
+const { subdominio } = Astro.params;
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY;
+
+let proyecto = null;
+
+if (supabaseUrl && supabaseKey && subdominio) {
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  // Buscamos en Supabase el registro que coincida con el subdominio de la URL
+  const { data } = await supabase
+    .from('proyectos')
+    .select('*')
+    .eq('subdominio', subdominio)
+    .single();
+  
+  proyecto = data;
+}
+---
+
+<Layout title={proyecto ? proyecto.nombre_proyecto : "Proyecto no encontrado"}>
+  <main class="min-h-screen bg-slate-50 py-16 px-6">
+    {proyecto ? (
+      <div class="max-w-3xl mx-auto bg-white p-10 rounded-3xl border border-slate-200 shadow-xl">
+        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase">{proyecto.estado}</span>
+        <h1 class="text-5xl font-black mt-4 mb-6">{proyecto.nombre_proyecto}</h1>
+        <p class="text-lg text-slate-600 mb-8">{proyecto.descripcion_oferta}</p>
+        
+        <div class="p-6 bg-slate-900 text-white rounded-2xl">
+          <p class="text-sm text-slate-400">Inversión mensual</p>
+          <p class="text-3xl font-bold">{proyecto.precio_mensual} {proyecto.moneda}</p>
+        </div>
+        
+        <a href="mailto:alianzas@vartens.com" class="block w-full text-center mt-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition">
+          Contactar para implementar
+        </a>
+      </div>
+    ) : (
+      <div class="text-center">
+        <h1 class="text-4xl font-bold">Proyecto no encontrado</h1>
+        <p class="mt-4">El subdominio "{subdominio}" no existe en nuestra base de datos.</p>
+        <a href="/directorio" class="mt-6 inline-block text-blue-600 font-bold">Volver al Directorio</a>
+      </div>
+    )}
+  </main>
+</Layout>
