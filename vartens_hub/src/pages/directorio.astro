@@ -2,26 +2,34 @@
 import Layout from '../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY;
+// Múltiples alternativas para capturar las credenciales sin importar cómo estén guardadas en Vercel
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
 let saas_list = [];
+let connectionError = null;
 
 if (supabaseUrl && supabaseKey) {
   try {
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('proyectos')
       .select('*')
       .order('fecha_creacion', { ascending: false });
     
-    saas_list = data || [];
-  } catch (e) {
-    saas_list = [];
+    if (error) {
+      connectionError = error.message;
+    } else {
+      saas_list = data || [];
+    }
+  } catch (e: any) {
+    connectionError = e.message;
   }
+} else {
+  connectionError = "Faltan las credenciales de Supabase en el entorno.";
 }
 
-const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'General'))];
+const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || item.pais_objetivo || 'General'))];
 ---
 
 <Layout title="Directorio de Soluciones Vartens">
@@ -48,6 +56,12 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
 
     <main class="max-w-7xl mx-auto px-6 py-16">
       
+      {connectionError && (
+        <div class="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-center text-sm font-medium max-w-xl mx-auto">
+          ⚠️ Aviso de conexión: {connectionError}
+        </div>
+      )}
+
       <!-- Título y Controles Pro -->
       <div class="text-center max-w-3xl mx-auto mb-16 space-y-6">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-wide uppercase shadow-2xs">
@@ -76,18 +90,18 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
         </div>
       </div>
 
-      <!-- Grilla de Tarjetas con Scroll Inteligente -->
+      <!-- Grilla de Tarjetas -->
       {saas_list.length > 0 ? (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="saas-grid">
           {saas_list.map((saas, index) => (
             <div class="saas-card bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col relative overflow-hidden"
-                 data-category={saas.estado || 'General'}
+                 data-category={saas.estado || saas.pais_objetivo || 'General'}
                  data-name={saas.nombre_proyecto ? saas.nombre_proyecto.toLowerCase() : ''}>
               <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
               <div class="flex items-center justify-between mb-6">
                   <span class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100">
-                      {saas.estado || 'General'}
+                      {saas.estado || saas.pais_objetivo || 'General'}
                   </span>
                   <span class="text-slate-300 font-mono text-sm">#{String(index + 1).padStart(3, '0')}</span>
               </div>
@@ -96,6 +110,7 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
               <p class="mt-3 text-slate-600 text-sm leading-relaxed flex-grow">{saas.descripcion_oferta || 'Sin descripción disponible.'}</p>
               
               <div class="mt-8 pt-6 border-t border-slate-100">
+                <!-- Enlace dinámico directo al subdominio del producto -->
                 <a href={`https://${saas.subdominio || 'app'}.vartens.com`} target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition-all duration-300">
                   Conocer solución →
                 </a>
@@ -104,14 +119,14 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
           ))}
         </div>
       ) : (
-        <div class="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200 max-w-xl mx-auto">
+        <div class="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200 max-w-xl mx-auto shadow-sm">
           <h3 class="text-xl font-bold text-slate-800">No hay proyectos sincronizados</h3>
-          <p class="mt-2 text-sm text-slate-500">Asegúrate de que la tabla 'proyectos' en Supabase contenga registros activos.</p>
+          <p class="mt-2 text-sm text-slate-500">Verifica que las políticas RLS en Supabase estén activas o que existan registros en la tabla 'proyectos'.</p>
         </div>
       )}
 
-      <!-- Estado vacío para el buscador/filtro -->
-      <div id="no-results" class="hidden text-center py-20 text-slate-500 bg-white rounded-3xl border border-slate-200 mt-6">
+      <!-- Estado vacío para búsqueda -->
+      <div id="no-results" class="hidden text-center py-20 text-slate-500 bg-white rounded-3xl border border-slate-200 mt-6 shadow-sm">
         <h3 class="text-lg font-bold text-slate-800">No se encontraron coincidencias</h3>
         <p class="text-sm text-slate-500 mt-1">Intenta con otro término de búsqueda o categoría.</p>
       </div>
