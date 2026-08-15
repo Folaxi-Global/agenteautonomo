@@ -1,11 +1,10 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
-import vercel from '@vercel/astro';
+import vercel from '@astrojs/vercel'; // <-- Asegúrate de que diga '@astrojs/vercel'
 
-// https://astro.build/config
 export default defineConfig({
-  output: 'server', // <-- Vital para que funcionen las rutas dinámicas por subdominio
+  output: 'server',
   adapter: vercel(),
   integrations: [tailwind(), react()],
   trailingSlash: 'never',
