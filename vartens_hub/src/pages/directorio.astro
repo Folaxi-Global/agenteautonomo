@@ -2,28 +2,34 @@
 import Layout from '../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización de la conexión
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY;
+// Captura directa de variables de entorno de Vercel (tanto públicas como privadas)
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
 
 let saas_list = [];
+let debugStatus = "";
 
-// Conexión dinámica a tu tabla de proyectos
-if (supabaseUrl && supabaseKey) {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  // Intentamos traer los proyectos de forma segura
-  const { data, error } = await supabase
-    .from('proyectos')
-    .select('*')
-    .order('fecha_creacion', { ascending: false });
-  
-  if (!error && data) {
-    // Filtramos en memoria por activo (o mostramos todos si el estado no está definido estricto)
-    saas_list = data.filter(item => !item.estado || item.estado === 'activo');
+if (!supabaseUrl || !supabaseKey) {
+  debugStatus = "Faltan las credenciales en Vercel (URL o Key vacías).";
+} else {
+  try {
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const { data, error } = await supabase
+      .from('proyectos')
+      .select('*')
+      .order('fecha_creacion', { ascending: false });
+
+    if (error) {
+      debugStatus = "Error de Supabase: " + error.message;
+    } else {
+      saas_list = data || [];
+      debugStatus = `Conectado con éxito. Encontrados: ${saas_list.length} registros.`;
+    }
+  } catch (e: any) {
+    debugStatus = "Excepción crítica: " + e.message;
   }
 }
 
-// Generar categorías dinámicamente según lo que tengas en la base de datos
 const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'General'))];
 ---
 
@@ -49,6 +55,12 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-16">
+      
+      <!-- Cuadro de diagnóstico flotante (para ver exactamente qué pasa en Vercel) -->
+      <div class="mb-8 p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs shadow-lg max-w-xl mx-auto text-center">
+        ⚡ Estado de Conexión: {debugStatus}
+      </div>
+
       <div class="text-center max-w-3xl mx-auto mb-16">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-6 tracking-wide uppercase">
           <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
@@ -78,7 +90,7 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
           ))}
       </div>
 
-      <!-- Grilla de Tarjetas Dinámica -->
+      <!-- Grilla de Tarjetas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="saas-grid">
         {saas_list.length > 0 ? saas_list.map((saas, index) => (
           <div class="saas-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col relative overflow-hidden"
@@ -101,8 +113,8 @@ const categories = ['Todos', ...new Set(saas_list.map(item => item.estado || 'Ge
           </div>
         )) : (
           <div class="col-span-3 text-center py-20 text-gray-500 bg-white rounded-3xl border border-dashed border-gray-200">
-            <h3 class="text-xl font-bold text-gray-800">Cargando soluciones en tiempo real...</h3>
-            <p class="mt-2 text-sm text-gray-500">Si persiste, verifica que las variables de entorno estén activas en Vercel.</p>
+            <h3 class="text-xl font-bold text-gray-800">No se encontraron proyectos en la base de datos</h3>
+            <p class="mt-2 text-sm text-gray-500">Revisa el cuadro superior negro para ver el diagnóstico exacto.</p>
           </div>
         )}
       </div>
