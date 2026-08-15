@@ -2,6 +2,13 @@
   "version": 2,
   "builds": [
     {
+      "src": "vartens_hub/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
       "src": "api/*.py",
       "use": "@vercel/python",
       "config": {
@@ -13,6 +20,10 @@
     {
       "src": "/api/(.*)",
       "dest": "api/$1.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "vartens_hub/$1"
     }
   ],
   "headers": [
@@ -37,43 +48,11 @@
   "crons": [
     {
       "path": "/api/auras",
-      "schedule": "0 0 * * *"
+      "schedule": "0 0,6,12,15,18 * * *"
     },
     {
       "path": "/api/difusion_automatica",
-      "schedule": "30 0 * * *"
-    },
-    {
-      "path": "/api/auras",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/difusion_automatica",
-      "schedule": "30 6 * * *"
-    },
-    {
-      "path": "/api/auras",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/difusion_automatica",
-      "schedule": "30 12 * * *"
-    },
-    {
-      "path": "/api/auras",
-      "schedule": "0 15 * * *"
-    },
-    {
-      "path": "/api/difusion_automatica",
-      "schedule": "30 15 * * *"
-    },
-    {
-      "path": "/api/auras",
-      "schedule": "0 18 * * *"
-    },
-    {
-      "path": "/api/difusion_automatica",
-      "schedule": "30 18 * * *"
+      "schedule": "30 0,6,12,15,18 * * *"
     },
     {
       "path": "/api/evaluar_ciclos",
