@@ -6,7 +6,7 @@ import requests
 import time
 import logging
 from http.server import BaseHTTPRequestHandler
-import google.generativeai as genai
+from google import genai
 from supabase import create_client, Client
 
 # --- CONFIGURACIÓN ---
@@ -18,9 +18,10 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
 
-genai.configure(api_key=GEMINI_API_KEY)
+# Inicialización del cliente oficial Google GenAI
+client = genai.Client(api_key=GEMINI_API_KEY)
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-MODELO_AFORO = "gemini-3.6-flash"
+MODELO_AFORO = "gemini-2.5-flash"
 
 INFO_MERCADO = [
     {"pais": "México", "moneda": "MXN", "iso": "MX"},
@@ -59,18 +60,22 @@ def notificar_slack(proyecto_data, saldo_actual):
 def aura_idear_y_registrar():
     mercado = random.choice(INFO_MERCADO)
     
-    # Prompt optimizado para un SaaS que se pueda automatizar (Landing + Entrega)
     prompt = f"""Actúa como el CEO de Vartens. Genera un Micro-SaaS ultra ligero para {mercado['pais']}.
     Debe ser un producto de software que pueda entregarse automáticamente (acceso a web/dashboard).
     Responde ÚNICAMENTE en JSON con estas llaves exactas: 
     'nombre_proyecto', 'subdominio_sugerido', 'descripcion_oferta', 'precio_mensual_local', 'moneda'.
     """
     
-    # Generación con reintentos
+    # Generación con reintentos usando la API moderna de google-genai
     for attempt in range(3):
         try:
-            model = genai.GenerativeModel(MODELO_AFORO)
-            response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
+            response = client.models.generate_content(
+                model=MODELO_AFORO,
+                contents=prompt,
+                config={
+                    "response_mime_type": "application/json"
+                }
+            )
             data = json.loads(response.text)
             data.update({'iso_objetivo': mercado['iso'], 'pais_objetivo': mercado['pais']})
             
